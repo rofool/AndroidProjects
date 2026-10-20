@@ -1,3 +1,1 @@
-<resources>
-    <string name="app_name">FirstTry</string>
-</resources>
+<resources><string name="app_name">Каталог приложений</string><string name="catalog_title">Приложения</string></resources>

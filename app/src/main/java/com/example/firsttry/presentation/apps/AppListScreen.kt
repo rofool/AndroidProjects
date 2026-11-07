@@ -1,5 +1,7 @@
 package com.example.firsttry.presentation.apps
 
+import coil3.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -121,8 +123,12 @@ private fun AppListItem(app: CatalogApp) {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.Top,
         ) {
-            Image(
-                painter = painterResource(app.icon.drawableRes()),
+            AsyncImage(
+                model = app.iconUrl,
+                placeholder = painterResource(R.drawable.ic_catalog),
+                error = painterResource(R.drawable.ic_catalog),
+                fallback = painterResource(R.drawable.ic_catalog),
+                contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier.size(56.dp).clip(RoundedCornerShape(14.dp)),
             )

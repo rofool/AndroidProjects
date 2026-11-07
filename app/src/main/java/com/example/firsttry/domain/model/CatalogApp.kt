@@ -5,5 +5,5 @@ data class CatalogApp(
     val name: String,
     val description: String,
     val category: String,
-    val icon: AppIcon,
+    val iconUrl: String?,
 )

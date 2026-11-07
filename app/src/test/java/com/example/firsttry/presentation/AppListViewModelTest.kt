@@ -1,6 +1,5 @@
 package com.example.firsttry.presentation
 
-import com.example.firsttry.domain.model.AppIcon
 import com.example.firsttry.domain.model.CatalogApp
 import com.example.firsttry.domain.repository.AppRepository
 import com.example.firsttry.presentation.apps.AppListEvent
@@ -24,7 +23,7 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class AppListViewModelTest {
     private val dispatcher = StandardTestDispatcher()
-    private val app = CatalogApp("id", "Название", "Описание", "Категория", AppIcon.CHAT)
+    private val app = CatalogApp("id", "Название", "Описание", "Категория", "https://example.com/icon.png")
 
     @Before fun setUp() { Dispatchers.setMain(dispatcher) }
     @After fun tearDown() { Dispatchers.resetMain() }
@@ -32,6 +31,7 @@ class AppListViewModelTest {
     @Test fun loadsOnceAndNewCollectorsReceiveCachedContent() = runTest(dispatcher) {
         var calls = 0
         val repository = object : AppRepository {
+            override suspend fun getAppDetails(id: String): com.example.firsttry.domain.model.AppDetails = error("Not used")
             override suspend fun getApps(): List<CatalogApp> {
                 calls++
                 return listOf(app)
@@ -54,6 +54,7 @@ class AppListViewModelTest {
     @Test fun failedLoadCanBeRetried() = runTest(dispatcher) {
         var fail = true
         val repository = object : AppRepository {
+            override suspend fun getAppDetails(id: String): com.example.firsttry.domain.model.AppDetails = error("Not used")
             override suspend fun getApps(): List<CatalogApp> {
                 if (fail) error("Unavailable")
                 return listOf(app)
@@ -70,6 +71,7 @@ class AppListViewModelTest {
 
     @Test fun snackbarEventIsNotReplayedToNewCollector() = runTest(dispatcher) {
         val repository = object : AppRepository {
+            override suspend fun getAppDetails(id: String): com.example.firsttry.domain.model.AppDetails = error("Not used")
             override suspend fun getApps() = emptyList<CatalogApp>()
         }
         val viewModel = AppListViewModel(repository)
